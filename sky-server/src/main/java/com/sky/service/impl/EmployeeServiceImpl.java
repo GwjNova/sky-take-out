@@ -1,5 +1,7 @@
 package com.sky.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
@@ -106,6 +108,24 @@ public class EmployeeServiceImpl implements EmployeeService {
         long total = page.getTotal();
         List<Employee> records = page.getResult();
         return new PageResult(total,records);
+    }
+
+
+    /**
+     * 启用禁用员工账号
+     *
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        // 创建 UpdateWrapper 对象
+        UpdateWrapper<Employee> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id);
+        // 创建 Employee 对象，只设置需要更新的字段
+        Employee employee = new Employee();
+        employee.setStatus(status);
+        employeeMapper.update(employee, updateWrapper);
     }
 
 }
